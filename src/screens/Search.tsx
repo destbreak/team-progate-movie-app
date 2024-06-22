@@ -1,9 +1,12 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { Text, View } from 'react-native'
+import useThemeContext from '../util/useThemeContext'
 
 export default function Search(): JSX.Element {
+  const { colors } = useThemeContext()
+
   return (
-    <View>
+    <View style={{ backgroundColor: colors.backgrounds.default }}>
       <Text>Search</Text>
     </View>
   )
