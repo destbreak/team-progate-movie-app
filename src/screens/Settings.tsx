@@ -3,7 +3,8 @@ import { Text, StyleSheet, Switch, View } from 'react-native'
 import useThemeContext from '../util/useThemeContext'
 
 export default function Settings() {
-  const { colors, isSystemTheme, colorTheme, setColorTheme } = useThemeContext()
+  const { colors, isSystemTheme, systemTheme, colorTheme, setColorTheme } =
+    useThemeContext()
 
   return (
     <View
@@ -12,6 +13,16 @@ export default function Settings() {
         { backgroundColor: colors.backgrounds.default },
       ]}
     >
+      <View style={[styles.heading, { borderColor: colors.text }]}>
+        <Text style={[styles.headingText, { color: colors.text }]}>Theme</Text>
+      </View>
+      <View style={styles.row}>
+        <Text style={{ color: colors.text }}>Follow device setting</Text>
+        <Switch
+          onValueChange={(on) => setColorTheme(on ? null : systemTheme)}
+          value={isSystemTheme}
+        />
+      </View>
       <View style={styles.row}>
         <Text style={{ color: colors.text }}>Dark Mode</Text>
         <Switch
@@ -30,6 +41,14 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     paddingHorizontal: 24,
     justifyContent: 'center',
+  },
+  heading: {
+    borderBottomWidth: 1,
+  },
+  headingText: {
+    fontSize: 21,
+    lineHeight: 28,
+    fontWeight: 600,
   },
   row: {
     flexDirection: 'row',
