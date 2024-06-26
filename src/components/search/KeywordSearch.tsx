@@ -90,6 +90,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   list: {
-    paddingBottom: 100,
+    paddingBottom: 50,
   },
 })
