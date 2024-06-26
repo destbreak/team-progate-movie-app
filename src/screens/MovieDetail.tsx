@@ -2,26 +2,30 @@ import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
-  ImageBackground,
   StyleSheet,
   ScrollView,
   ActivityIndicator,
 } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
-import { FontAwesome } from '@expo/vector-icons'
-import { API_ACCESS_TOKEN } from '@env'
-import MovieList from '../components/movies/MovieList'
-import { Movie } from '../types/app'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import YoutubePlayer from 'react-native-youtube-iframe'
+import { FontAwesome } from '@expo/vector-icons'
+import MovieList from '../components/movies/MovieList'
+import useThemeContext from '../util/useThemeContext'
+import { Movie } from '../types/app'
+import { API_ACCESS_TOKEN } from '@env'
 
 export default function MovieDetail({ route }: any): JSX.Element {
+  const { colors } = useThemeContext()
+
   const { id } = route.params
   const [movie, setMovie] = useState<any | null>(null)
+  const [movieTrailer, setMovieTrailer] = useState()
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
 
   useEffect(() => {
     getMovieDetails()
+    getMovieTrailer()
     checkIsFavorite(id).then(setIsFavorite)
   }, [])
 
@@ -44,6 +48,29 @@ export default function MovieDetail({ route }: any): JSX.Element {
       .catch((errorResponse) => {
         console.log(errorResponse)
         setIsLoading(false)
+      })
+  }
+
+  const getMovieTrailer = async (): Promise<void> => {
+    const url = `https://api.themoviedb.org/3/movie/${id}/videos`
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${API_ACCESS_TOKEN}`,
+      },
+    }
+
+    fetch(url, options)
+      .then((response) => response.json())
+      .then((response) => {
+        const trailer = response.results.find(
+          (video) => video.type === 'Trailer',
+        )
+        setMovieTrailer(trailer?.key)
+      })
+      .catch((errorResponse) => {
+        console.log(errorResponse)
       })
   }
 
@@ -125,58 +152,56 @@ export default function MovieDetail({ route }: any): JSX.Element {
 
   return (
     <ScrollView>
-      <View>
-        <ImageBackground
-          resizeMode="cover"
-          style={styles.backgroundImage}
-          imageStyle={styles.backgroundImageStyle}
-          source={{
-            uri: `https://image.tmdb.org/t/p/w500${movie?.backdrop_path}`,
-          }}
-        >
-          <LinearGradient
-            colors={['#00000000', 'rgba(0, 0, 0, 0.7)']}
-            locations={[0.6, 0.8]}
-            style={styles.gradientStyle}
-          >
-            <View style={styles.titleRatingContainer}>
-              <View>
-                <Text style={styles.movieTitle}>{movie?.title}</Text>
-                <View style={styles.ratingContainer}>
-                  <FontAwesome name="star" size={16} color="yellow" />
-                  <Text style={styles.rating}>
-                    {movie?.vote_average.toFixed(1)}
-                  </Text>
-                </View>
-              </View>
-              <FontAwesome
-                name={isFavorite ? 'heart' : 'heart-o'}
-                size={24}
-                color={isFavorite ? 'pink' : 'white'}
-                style={styles.favIcon}
-                onPress={toggleFavorite}
-              />
+      <View style={{ backgroundColor: colors.backgrounds.default }}>
+        <YoutubePlayer height={225} play={false} videoId={movieTrailer} />
+        <View style={styles.titleRatingContainer}>
+          <View>
+            <Text style={[styles.movieTitle, { color: colors.text }]}>
+              {movie?.title}
+            </Text>
+            <View style={styles.ratingContainer}>
+              <FontAwesome name="star" size={16} color="orange" />
+              <Text style={styles.rating}>
+                {movie?.vote_average.toFixed(1)}
+              </Text>
             </View>
-          </LinearGradient>
-        </ImageBackground>
+          </View>
+          <FontAwesome
+            name={isFavorite ? 'heart' : 'heart-o'}
+            size={24}
+            color={isFavorite ? 'pink' : 'black'}
+            style={[styles.favIcon, { color: colors.text }]}
+            onPress={toggleFavorite}
+          />
+        </View>
         <View style={styles.movieDescription}>
-          <Text>{movie?.overview}</Text>
+          <Text style={{ color: colors.text }}>{movie?.overview}</Text>
           <View style={styles.movieInfo}>
             <View style={styles.movieInfoItem}>
-              <Text style={styles.movieInfoItemTitle}>Original Language</Text>
-              <Text>{movie?.original_language}</Text>
+              <Text style={[styles.movieInfoItemTitle, { color: colors.text }]}>
+                Original Language
+              </Text>
+              <Text style={{ color: colors.text }}>
+                {movie?.original_language}
+              </Text>
             </View>
             <View style={styles.movieInfoItem}>
-              <Text style={styles.movieInfoItemTitle}>Popularity</Text>
-              <Text>{movie?.popularity}</Text>
+              <Text style={[styles.movieInfoItemTitle, { color: colors.text }]}>
+                Popularity
+              </Text>
+              <Text style={{ color: colors.text }}>{movie?.popularity}</Text>
             </View>
             <View style={styles.movieInfoItem}>
-              <Text style={styles.movieInfoItemTitle}>Release Date</Text>
-              <Text>{movie?.release_date}</Text>
+              <Text style={[styles.movieInfoItemTitle, { color: colors.text }]}>
+                Release Date
+              </Text>
+              <Text style={{ color: colors.text }}>{movie?.release_date}</Text>
             </View>
             <View style={styles.movieInfoItem}>
-              <Text style={styles.movieInfoItemTitle}>Vote Count</Text>
-              <Text>{movie?.vote_count}</Text>
+              <Text style={[styles.movieInfoItemTitle, { color: colors.text }]}>
+                Vote Count
+              </Text>
+              <Text style={{ color: colors.text }}>{movie?.vote_count}</Text>
             </View>
           </View>
         </View>
@@ -201,16 +226,15 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingLeft: 10,
-    paddingBottom: 10,
+    paddingHorizontal: 18,
+    paddingVertical: 10,
   },
   favIcon: {
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
     paddingRight: 10,
     paddingBottom: 3,
   },
   movieTitle: {
-    color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
     maxWidth: 300,
@@ -228,11 +252,11 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   rating: {
-    color: 'yellow',
+    color: 'orange',
     fontWeight: '700',
   },
   movieDescription: {
-    padding: 18,
+    paddingHorizontal: 18,
     marginBottom: 10,
   },
   movieInfo: {
