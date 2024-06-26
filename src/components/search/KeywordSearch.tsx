@@ -1,7 +1,14 @@
 import React, { useState } from 'react'
-import { FlatList, StyleSheet, Text, TextInput, View } from 'react-native'
+import {
+  FlatList,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import useThemeContext from '../../util/useThemeContext'
+import MovieItem from '../movies/MovieItem'
 import { API_ACCESS_TOKEN } from '@env'
 
 export default function KeywordSearch(): JSX.Element {
@@ -47,8 +54,18 @@ export default function KeywordSearch(): JSX.Element {
       <FlatList
         data={results}
         renderItem={({ item }) => (
-          <Text style={{ color: colors.text }}>{item.title}</Text>
+          <TouchableOpacity style={styles.itemContainer}>
+            <MovieItem
+              movie={item}
+              size={{ width: 95, height: 160 }}
+              coverType="poster"
+            />
+          </TouchableOpacity>
         )}
+        keyExtractor={(item) => `${item.id}`}
+        numColumns={3}
+        contentContainerStyle={styles.list}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   )
@@ -67,5 +84,12 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
+  },
+  itemContainer: {
+    margin: 8,
+    alignItems: 'center',
+  },
+  list: {
+    paddingBottom: 50,
   },
 })
