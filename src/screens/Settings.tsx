@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 24,
     paddingHorizontal: 24,
-    justifyContent: 'center',
   },
   heading: {
     borderBottomWidth: 1,

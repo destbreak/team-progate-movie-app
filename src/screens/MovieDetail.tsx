@@ -151,66 +151,62 @@ export default function MovieDetail({ route }: any): JSX.Element {
   }
 
   return (
-    <ScrollView>
-      <View style={{ backgroundColor: colors.backgrounds.default }}>
-        <YoutubePlayer height={225} play={false} videoId={movieTrailer} />
-        <View style={styles.titleRatingContainer}>
-          <View>
-            <Text style={[styles.movieTitle, { color: colors.text }]}>
-              {movie?.title}
-            </Text>
-            <View style={styles.ratingContainer}>
-              <FontAwesome name="star" size={16} color="orange" />
-              <Text style={styles.rating}>
-                {movie?.vote_average.toFixed(1)}
-              </Text>
-            </View>
-          </View>
-          <FontAwesome
-            name={isFavorite ? 'heart' : 'heart-o'}
-            size={24}
-            color={isFavorite ? 'pink' : 'black'}
-            style={[styles.favIcon, { color: colors.text }]}
-            onPress={toggleFavorite}
-          />
-        </View>
-        <View style={styles.movieDescription}>
-          <Text style={{ color: colors.text }}>{movie?.overview}</Text>
-          <View style={styles.movieInfo}>
-            <View style={styles.movieInfoItem}>
-              <Text style={[styles.movieInfoItemTitle, { color: colors.text }]}>
-                Original Language
-              </Text>
-              <Text style={{ color: colors.text }}>
-                {movie?.original_language}
-              </Text>
-            </View>
-            <View style={styles.movieInfoItem}>
-              <Text style={[styles.movieInfoItemTitle, { color: colors.text }]}>
-                Popularity
-              </Text>
-              <Text style={{ color: colors.text }}>{movie?.popularity}</Text>
-            </View>
-            <View style={styles.movieInfoItem}>
-              <Text style={[styles.movieInfoItemTitle, { color: colors.text }]}>
-                Release Date
-              </Text>
-              <Text style={{ color: colors.text }}>{movie?.release_date}</Text>
-            </View>
-            <View style={styles.movieInfoItem}>
-              <Text style={[styles.movieInfoItemTitle, { color: colors.text }]}>
-                Vote Count
-              </Text>
-              <Text style={{ color: colors.text }}>{movie?.vote_count}</Text>
-            </View>
+    <ScrollView style={{ backgroundColor: colors.backgrounds.default }}>
+      <YoutubePlayer height={225} play={false} videoId={movieTrailer} />
+      <View style={styles.titleRatingContainer}>
+        <View>
+          <Text style={[styles.movieTitle, { color: colors.text }]}>
+            {movie?.title}
+          </Text>
+          <View style={styles.ratingContainer}>
+            <FontAwesome name="star" size={16} color="orange" />
+            <Text style={styles.rating}>{movie?.vote_average.toFixed(1)}</Text>
           </View>
         </View>
-        <MovieList
-          title="Recommended Movies"
-          path={`movie/${id}/recommendations?language=en-US&page=1`}
-          coverType="poster"
+        <FontAwesome
+          name={isFavorite ? 'heart' : 'heart-o'}
+          size={24}
+          color={'pink'}
+          style={styles.favIcon}
+          onPress={toggleFavorite}
         />
       </View>
+      <View style={styles.movieDescription}>
+        <Text style={{ color: colors.text }}>{movie?.overview}</Text>
+        <View style={styles.movieInfo}>
+          <View style={styles.movieInfoItem}>
+            <Text style={[styles.movieInfoItemTitle, { color: colors.text }]}>
+              Original Language
+            </Text>
+            <Text style={{ color: colors.text }}>
+              {movie?.original_language}
+            </Text>
+          </View>
+          <View style={styles.movieInfoItem}>
+            <Text style={[styles.movieInfoItemTitle, { color: colors.text }]}>
+              Popularity
+            </Text>
+            <Text style={{ color: colors.text }}>{movie?.popularity}</Text>
+          </View>
+          <View style={styles.movieInfoItem}>
+            <Text style={[styles.movieInfoItemTitle, { color: colors.text }]}>
+              Release Date
+            </Text>
+            <Text style={{ color: colors.text }}>{movie?.release_date}</Text>
+          </View>
+          <View style={styles.movieInfoItem}>
+            <Text style={[styles.movieInfoItemTitle, { color: colors.text }]}>
+              Vote Count
+            </Text>
+            <Text style={{ color: colors.text }}>{movie?.vote_count}</Text>
+          </View>
+        </View>
+      </View>
+      <MovieList
+        title="Recommended Movies"
+        path={`movie/${id}/recommendations?language=en-US&page=1`}
+        coverType="poster"
+      />
     </ScrollView>
   )
 }
