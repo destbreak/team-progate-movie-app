@@ -8,14 +8,12 @@ const Stack = createNativeStackNavigator()
 
 export default function SearchStackNavigation(): JSX.Element {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Search"
-        component={Search}
-        options={{
-          headerShown: false,
-        }}
-      />
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="CategoryResults" component={CategoryResults} />
       <Stack.Screen name="MovieDetail" component={MovieDetail} />
     </Stack.Navigator>

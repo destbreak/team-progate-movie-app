@@ -3,12 +3,14 @@ const colors: Record<ColorThemeName, ThemeColors> = {
     text: '#222',
     backgrounds: {
       default: '#fff',
+      revert: '#29292c',
     },
   },
   dark: {
     text: '#fff',
     backgrounds: {
       default: '#29292c',
+      revert: '#fff',
     },
   },
 }
@@ -19,6 +21,7 @@ export type ThemeColors = {
   text: string
   backgrounds: {
     default: string
+    revert: string
   }
 }
 

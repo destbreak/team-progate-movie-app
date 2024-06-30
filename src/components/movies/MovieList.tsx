@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList } from 'react-native'
 import type { MovieListProps, Movie } from '../../types/app'
 import { API_ACCESS_TOKEN } from '@env'
 import MovieItem from './MovieItem'
+import useThemeContext from '../../util/useThemeContext'
 
 const coverImageSize = {
   backdrop: {
@@ -20,6 +21,8 @@ export default function MovieList({
   path,
   coverType,
 }: MovieListProps): JSX.Element {
+  const { colors } = useThemeContext()
+
   const [movies, setMovies] = useState<Movie[]>([])
 
   useEffect(() => {
@@ -49,8 +52,13 @@ export default function MovieList({
   return (
     <View>
       <View style={styles.header}>
-        <View style={styles.purpleLabel}></View>
-        <Text style={styles.title}>{title}</Text>
+        <View
+          style={[
+            styles.purpleLabel,
+            { backgroundColor: colors.backgrounds.revert },
+          ]}
+        ></View>
+        <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
       </View>
       <FlatList
         style={{
@@ -84,7 +92,6 @@ const styles = StyleSheet.create({
     width: 20,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#8978A4',
     marginRight: 12,
   },
   title: {

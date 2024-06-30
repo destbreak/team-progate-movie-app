@@ -51,22 +51,23 @@ export default function KeywordSearch(): JSX.Element {
         />
         <Feather name="search" size={28} />
       </View>
-      <FlatList
-        data={results}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.itemContainer}>
-            <MovieItem
-              movie={item}
-              size={{ width: 95, height: 160 }}
-              coverType="poster"
-            />
-          </TouchableOpacity>
-        )}
-        keyExtractor={(item) => `${item.id}`}
-        numColumns={3}
-        contentContainerStyle={styles.list}
-        showsVerticalScrollIndicator={false}
-      />
+      <View style={styles.container}>
+        <FlatList
+          data={results}
+          renderItem={({ item }) => (
+            <TouchableOpacity style={styles.itemContainer}>
+              <MovieItem
+                movie={item}
+                size={{ width: 95, height: 160 }}
+                coverType="poster"
+              />
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => `${item.id}`}
+          numColumns={3}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
     </View>
   )
 }
@@ -85,11 +86,11 @@ const styles = StyleSheet.create({
   input: {
     height: 50,
   },
+  container: {
+    alignItems: 'center',
+    paddingVertical: 24,
+  },
   itemContainer: {
     margin: 8,
-    alignItems: 'center',
-  },
-  list: {
-    paddingBottom: 50,
   },
 })

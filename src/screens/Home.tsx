@@ -13,6 +13,7 @@ import {
 import type { MovieListProps } from '../types/app'
 import MovieList from '../components/movies/MovieList'
 import { Ionicons } from '@expo/vector-icons'
+import useThemeContext from '../util/useThemeContext'
 
 const movieLists: MovieListProps[] = [
   {
@@ -38,6 +39,8 @@ const movieLists: MovieListProps[] = [
 ]
 
 export default function Home(): JSX.Element {
+  const { colors } = useThemeContext()
+
   const [modalVisible, setModalVisible] = useState(false)
   const openMarioGitHubProfile = () => {
     Linking.openURL('https://github.com/mariotbg11')
@@ -60,9 +63,13 @@ export default function Home(): JSX.Element {
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: colors.backgrounds.default }}>
       <Pressable style={styles.infoIcon} onPress={() => setModalVisible(true)}>
-        <Ionicons name="information-circle-outline" size={30} color="black" />
+        <Ionicons
+          name="information-circle-outline"
+          size={30}
+          color={colors.text}
+        />
       </Pressable>
 
       <View style={styles.container}>
@@ -87,21 +94,30 @@ export default function Home(): JSX.Element {
         }}
       >
         <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.title}>About This App</Text>
-            <Text style={styles.text}>
+          <View
+            style={[
+              styles.modalView,
+              { backgroundColor: colors.backgrounds.default },
+            ]}
+          >
+            <Text style={[styles.title, { color: colors.text }]}>
+              About This App
+            </Text>
+            <Text style={[styles.text, { color: colors.text }]}>
               This is a movie app where you can discover new movies, see the
-              most popular and top-rated movies, and find out what's playing in
+              most popular and top-rated movies, and find out what is playing in
               theaters now. Enjoy exploring the app!
             </Text>
-            <Text style={styles.title}>Features</Text>
-            <Text style={styles.text}>
+            <Text style={[styles.title, { color: colors.text }]}>Features</Text>
+            <Text style={[styles.text, { color: colors.text }]}>
               - Search movies by keyword or genre{'\n'}- View detailed
               information about movies{'\n'}- Add movies to your favorite{'\n'}-
               Watch trailers
             </Text>
-            <Text style={styles.title}>Developer</Text>
-            <Text style={styles.text}>
+            <Text style={[styles.title, { color: colors.text }]}>
+              Developer
+            </Text>
+            <Text style={[styles.text, { color: colors.text }]}>
               This app was developed by <Text style={styles.name}>Mario</Text>{' '}
               and <Text style={styles.name}>Reynaldi</Text>. Feel free to
               contact us for any questions or feedback.{'\n'}
@@ -125,8 +141,10 @@ export default function Home(): JSX.Element {
                 Github
               </Text>{' '}
             </Text>
-            <Text style={styles.title}>Acknowledgements</Text>
-            <Text style={styles.text}>
+            <Text style={[styles.title, { color: colors.text }]}>
+              Acknowledgements
+            </Text>
+            <Text style={[styles.text, { color: colors.text }]}>
               This app uses the{' '}
               <Text style={styles.linkText} onPress={openTMDBSite}>
                 TMDB API
@@ -216,7 +234,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   linkText: {
-    color: 'blue',
+    color: '#2196F3',
     textDecorationLine: 'underline',
   },
   name: {

@@ -40,7 +40,6 @@ export default function Search(): JSX.Element {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 24,
     paddingHorizontal: 24,
   },
   topBarContainer: {

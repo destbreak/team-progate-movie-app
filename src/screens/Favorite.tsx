@@ -49,12 +49,10 @@ export default function Favorite(): JSX.Element {
 
   return (
     <View
-      style={{
-        backgroundColor: colors.backgrounds.default,
-        flex: 1,
-        paddingHorizontal: 30,
-        paddingVertical: 50,
-      }}
+      style={[
+        styles.container,
+        { backgroundColor: colors.backgrounds.default },
+      ]}
     >
       {favoriteList.length === 0 ? (
         <Text style={styles.noFavorite}>No favorite movies yet.</Text>
@@ -71,9 +69,7 @@ export default function Favorite(): JSX.Element {
               />
             </TouchableOpacity>
           )}
-          contentContainerStyle={styles.movieList}
           numColumns={3}
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
         />
       )}
     </View>
@@ -81,6 +77,11 @@ export default function Favorite(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 24,
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -91,16 +92,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  movieList: {
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-  },
   movieItemContainer: {
-    flexBasis: '34.5%',
-  },
-  separator: {
-    height: 18,
-    width: '100%',
+    margin: 8,
   },
   noFavorite: {
     fontSize: 18,

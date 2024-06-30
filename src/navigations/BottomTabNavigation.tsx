@@ -15,38 +15,38 @@ export default function BottomTabNavigator(): JSX.Element {
   return (
     <Tab.Navigator
       screenOptions={{
+        headerShown: false,
         tabBarStyle: { backgroundColor: colors.backgrounds.default },
       }}
     >
       <Tab.Screen
-        name="HomeStack"
+        name="HomeStackNavigation"
         component={HomeStackNavigation}
         options={{
           tabBarIcon: ({ color }) => (
             <Feather name="home" size={28} color={color} />
           ),
-          headerShown: false,
           tabBarLabel: 'Home',
         }}
       />
       <Tab.Screen
-        name="Search"
+        name="SearchStackNavigation"
         component={SearchStackNavigation}
         options={{
           tabBarIcon: ({ color }) => (
             <Feather name="search" size={28} color={color} />
           ),
-          headerShown: false,
+          tabBarLabel: 'Search',
         }}
       />
       <Tab.Screen
-        name="Favorite"
+        name="FavoriteStackNavigation"
         component={FavoriteStackNavigation}
         options={{
           tabBarIcon: ({ color }) => (
             <Feather name="heart" size={28} color={color} />
           ),
-          headerShown: false,
+          tabBarLabel: 'Favorite',
         }}
       />
       <Tab.Screen
@@ -56,7 +56,7 @@ export default function BottomTabNavigator(): JSX.Element {
           tabBarIcon: ({ color }) => (
             <Feather name="settings" size={28} color={color} />
           ),
-          headerShown: false,
+          tabBarLabel: 'Settings',
         }}
       />
     </Tab.Navigator>

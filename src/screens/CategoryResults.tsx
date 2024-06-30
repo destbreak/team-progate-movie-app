@@ -35,7 +35,12 @@ export default function CategoryResults({ route }): JSX.Element {
   }
 
   return (
-    <View style={{ backgroundColor: colors.backgrounds.default }}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: colors.backgrounds.default },
+      ]}
+    >
       <FlatList
         data={movieList}
         renderItem={({ item }) => (
@@ -49,7 +54,6 @@ export default function CategoryResults({ route }): JSX.Element {
         )}
         keyExtractor={(item) => `${item.id}`}
         numColumns={3}
-        contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
       />
     </View>
@@ -57,11 +61,12 @@ export default function CategoryResults({ route }): JSX.Element {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 24,
+  },
   itemContainer: {
     margin: 8,
-    alignItems: 'center',
-  },
-  list: {
-    paddingBottom: 100,
   },
 })
