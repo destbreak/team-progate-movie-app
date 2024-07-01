@@ -1,11 +1,12 @@
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+
 import Favorite from '../screens/Favorite'
 import MovieDetail from '../screens/MovieDetail'
 
 const Stack = createNativeStackNavigator()
 
-export default function HomeStackNavigation(): JSX.Element {
+const FavoriteStackNavigation = (): JSX.Element => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -17,3 +18,5 @@ export default function HomeStackNavigation(): JSX.Element {
     </Stack.Navigator>
   )
 }
+
+export default FavoriteStackNavigation

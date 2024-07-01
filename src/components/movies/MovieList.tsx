@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
+
 import type { MovieListProps, Movie } from '../../types/app'
-import { API_ACCESS_TOKEN } from '@env'
 import MovieItem from './MovieItem'
 import useThemeContext from '../../util/useThemeContext'
+import { API_ACCESS_TOKEN } from '@env'
 
 const coverImageSize = {
   backdrop: {
@@ -16,11 +17,7 @@ const coverImageSize = {
   },
 }
 
-export default function MovieList({
-  title,
-  path,
-  coverType,
-}: MovieListProps): JSX.Element {
+const MovieList = ({ title, path, coverType }: MovieListProps): JSX.Element => {
   const { colors } = useThemeContext()
 
   const [movies, setMovies] = useState<Movie[]>([])
@@ -45,7 +42,7 @@ export default function MovieList({
         setMovies(response.results)
       })
       .catch((errorResponse) => {
-        console.log(errorResponse)
+        console.error(errorResponse)
       })
   }
 
@@ -54,7 +51,7 @@ export default function MovieList({
       <View style={styles.header}>
         <View
           style={[
-            styles.purpleLabel,
+            styles.iconTitle,
             { backgroundColor: colors.backgrounds.revert },
           ]}
         ></View>
@@ -62,7 +59,7 @@ export default function MovieList({
       </View>
       <FlatList
         style={{
-          ...styles.movieList,
+          ...styles.list,
           maxHeight: coverImageSize[coverType].height,
         }}
         showsHorizontalScrollIndicator={false}
@@ -83,23 +80,25 @@ export default function MovieList({
 
 const styles = StyleSheet.create({
   header: {
-    marginLeft: 6,
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
+    marginLeft: 8,
   },
-  purpleLabel: {
-    width: 20,
-    height: 40,
+  iconTitle: {
     borderRadius: 20,
-    marginRight: 12,
+    height: 40,
+    marginRight: 8,
+    width: 20,
   },
   title: {
     fontSize: 20,
     fontWeight: '900',
   },
-  movieList: {
-    paddingLeft: 4,
+  list: {
     marginTop: 8,
+    paddingLeft: 8,
   },
 })
+
+export default MovieList

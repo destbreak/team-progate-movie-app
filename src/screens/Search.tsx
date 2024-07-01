@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import useThemeContext from '../util/useThemeContext'
+
 import KeywordSearch from '../components/search/KeywordSearch'
 import CategorySearch from '../components/search/CategorySearch'
+import useThemeContext from '../util/useThemeContext'
 
-export default function Search(): JSX.Element {
+const Search = (): JSX.Element => {
   const { colors } = useThemeContext()
 
   const [selectedBar, setSelectedBar] = useState<string>('keyword')
@@ -17,7 +18,7 @@ export default function Search(): JSX.Element {
       ]}
     >
       <View style={styles.topBarContainer}>
-        {['keyword', 'category'].map((item: string, index: number) => (
+        {['keyword', 'category'].map((item: string) => (
           <TouchableOpacity
             style={styles.topBar}
             key={item}
@@ -40,20 +41,21 @@ export default function Search(): JSX.Element {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
   },
   topBarContainer: {
     display: 'flex',
     flexDirection: 'row',
-    width: '100%',
   },
   topBar: {
     alignItems: 'center',
+    height: 60,
     justifyContent: 'center',
     width: '50%',
-    height: 60,
   },
   topBarLabel: {
     textTransform: 'capitalize',
   },
 })
+
+export default Search

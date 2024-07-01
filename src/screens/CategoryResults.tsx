@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import useThemeContext from '../util/useThemeContext'
+
+import type { Movie } from '../types/app'
 import MovieItem from '../components/movies/MovieItem'
+import useThemeContext from '../util/useThemeContext'
 import { API_ACCESS_TOKEN } from '@env'
 
-export default function CategoryResults({ route }): JSX.Element {
+const CategoryResults = ({ route }: any): JSX.Element => {
   const { colors } = useThemeContext()
 
   const { category } = route.params
-  console.log(category)
-
-  const [movieList, setMovieList] = useState([])
+  const [movieList, setMovieList] = useState<Movie[]>([])
 
   useEffect(() => {
     getMovieList()
@@ -44,7 +44,7 @@ export default function CategoryResults({ route }): JSX.Element {
       <FlatList
         data={movieList}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.itemContainer}>
+          <TouchableOpacity style={styles.list}>
             <MovieItem
               movie={item}
               size={{ width: 95, height: 160 }}
@@ -52,7 +52,7 @@ export default function CategoryResults({ route }): JSX.Element {
             />
           </TouchableOpacity>
         )}
-        keyExtractor={(item) => `${item.id}`}
+        keyExtractor={(item) => item.id.toString()}
         numColumns={3}
         showsVerticalScrollIndicator={false}
       />
@@ -62,11 +62,13 @@ export default function CategoryResults({ route }): JSX.Element {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
-    paddingVertical: 24,
+    flex: 1,
+    paddingVertical: 16,
   },
-  itemContainer: {
+  list: {
     margin: 8,
   },
 })
+
+export default CategoryResults

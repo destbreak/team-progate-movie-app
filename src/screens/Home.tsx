@@ -1,44 +1,45 @@
 import React, { useState } from 'react'
 import {
+  Alert,
+  Linking,
+  Modal,
+  Pressable,
   ScrollView,
-  View,
   StatusBar,
   StyleSheet,
-  Modal,
-  Alert,
-  Pressable,
   Text,
-  Linking,
+  View,
 } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+
 import type { MovieListProps } from '../types/app'
 import MovieList from '../components/movies/MovieList'
-import { Ionicons } from '@expo/vector-icons'
 import useThemeContext from '../util/useThemeContext'
 
 const movieLists: MovieListProps[] = [
   {
     title: 'Now Playing in Theater',
-    path: 'movie/now_playing?language=en-US&page=1',
+    path: 'movie/now_playing?page=1',
     coverType: 'backdrop',
   },
   {
     title: 'Upcoming Movies',
-    path: 'movie/upcoming?language=en-US&page=1',
+    path: 'movie/upcoming?page=1',
     coverType: 'poster',
   },
   {
     title: 'Top Rated Movies',
-    path: 'movie/top_rated?language=en-US&page=1',
+    path: 'movie/top_rated?page=1',
     coverType: 'poster',
   },
   {
     title: 'Popular Movies',
-    path: 'movie/popular?language=en-US&page=1',
+    path: 'movie/popular?page=1',
     coverType: 'poster',
   },
 ]
 
-export default function Home(): JSX.Element {
+const Home = (): JSX.Element => {
   const { colors } = useThemeContext()
 
   const [modalVisible, setModalVisible] = useState(false)
@@ -64,15 +65,17 @@ export default function Home(): JSX.Element {
 
   return (
     <ScrollView style={{ backgroundColor: colors.backgrounds.default }}>
-      <Pressable style={styles.infoIcon} onPress={() => setModalVisible(true)}>
-        <Ionicons
-          name="information-circle-outline"
-          size={30}
-          color={colors.text}
-        />
-      </Pressable>
-
       <View style={styles.container}>
+        <Pressable
+          style={styles.infoIcon}
+          onPress={() => setModalVisible(true)}
+        >
+          <Ionicons
+            name="information-circle-outline"
+            size={30}
+            color={colors.text}
+          />
+        </Pressable>
         {movieLists.map((movieList) => (
           <MovieList
             title={movieList.title}
@@ -85,7 +88,7 @@ export default function Home(): JSX.Element {
       </View>
 
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
@@ -93,60 +96,72 @@ export default function Home(): JSX.Element {
           setModalVisible(!modalVisible)
         }}
       >
-        <View style={styles.centeredView}>
+        <View style={styles.modalBackground}>
           <View
             style={[
-              styles.modalView,
+              styles.modalContainer,
               { backgroundColor: colors.backgrounds.default },
             ]}
           >
-            <Text style={[styles.title, { color: colors.text }]}>
+            <Text style={[styles.modalTitle, { color: colors.text }]}>
               About This App
             </Text>
-            <Text style={[styles.text, { color: colors.text }]}>
+            <Text style={[styles.modalText, { color: colors.text }]}>
               This is a movie app where you can discover new movies, see the
               most popular and top-rated movies, and find out what is playing in
               theaters now. Enjoy exploring the app!
             </Text>
-            <Text style={[styles.title, { color: colors.text }]}>Features</Text>
-            <Text style={[styles.text, { color: colors.text }]}>
+            <Text style={[styles.modalTitle, { color: colors.text }]}>
+              Features
+            </Text>
+            <Text style={[styles.modalText, { color: colors.text }]}>
               - Search movies by keyword or genre{'\n'}- View detailed
               information about movies{'\n'}- Add movies to your favorite{'\n'}-
               Watch trailers
             </Text>
-            <Text style={[styles.title, { color: colors.text }]}>
+            <Text style={[styles.modalTitle, { color: colors.text }]}>
               Developer
             </Text>
-            <Text style={[styles.text, { color: colors.text }]}>
-              This app was developed by <Text style={styles.name}>Mario</Text>{' '}
-              and <Text style={styles.name}>Reynaldi</Text>. Feel free to
+            <Text style={[styles.modalText, { color: colors.text }]}>
+              This app was developed by{' '}
+              <Text style={styles.modalTextName}>Mario</Text> and{' '}
+              <Text style={styles.modalTextName}>Reynaldi</Text>. Feel free to
               contact us for any questions or feedback.{'\n'}
-              <Text style={styles.name}>Mario : </Text>
-              <Text style={styles.linkText} onPress={openMarioLinkedInProfile}>
+              <Text style={styles.modalTextName}>Mario : </Text>
+              <Text
+                style={styles.modalTextLink}
+                onPress={openMarioLinkedInProfile}
+              >
                 LinkedIn
               </Text>{' '}
               |{' '}
-              <Text style={styles.linkText} onPress={openMarioGitHubProfile}>
+              <Text
+                style={styles.modalTextLink}
+                onPress={openMarioGitHubProfile}
+              >
                 Github{'\n'}
               </Text>{' '}
-              <Text style={styles.name}>Reynaldi : </Text>
+              <Text style={styles.modalTextName}>Reynaldi : </Text>
               <Text
-                style={styles.linkText}
+                style={styles.modalTextLink}
                 onPress={openReynaldiLinkedInProfile}
               >
                 LinkedIn
               </Text>{' '}
               |{' '}
-              <Text style={styles.linkText} onPress={openReynaldiGitHubProfile}>
+              <Text
+                style={styles.modalTextLink}
+                onPress={openReynaldiGitHubProfile}
+              >
                 Github
               </Text>{' '}
             </Text>
-            <Text style={[styles.title, { color: colors.text }]}>
+            <Text style={[styles.modalTitle, { color: colors.text }]}>
               Acknowledgements
             </Text>
-            <Text style={[styles.text, { color: colors.text }]}>
+            <Text style={[styles.modalText, { color: colors.text }]}>
               This app uses the{' '}
-              <Text style={styles.linkText} onPress={openTMDBSite}>
+              <Text style={styles.modalTextLink} onPress={openTMDBSite}>
                 TMDB API
               </Text>{' '}
               to provide movie data. Their API is free to use and their
@@ -154,10 +169,10 @@ export default function Home(): JSX.Element {
               just visit their site, create account and generate your api.
             </Text>
             <Pressable
-              style={[styles.button, styles.buttonClose]}
+              style={[styles.modalButton, styles.modalButtonClose]}
               onPress={() => setModalVisible(!modalVisible)}
             >
-              <Text style={styles.textStyle}>Close</Text>
+              <Text style={styles.modalButtonText}>Close</Text>
             </Pressable>
           </View>
         </View>
@@ -168,31 +183,27 @@ export default function Home(): JSX.Element {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: StatusBar.currentHeight ?? 32,
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginVertical: 16,
+    position: 'relative',
     rowGap: 16,
   },
-
   infoIcon: {
     position: 'absolute',
-    top: 6,
     right: 10,
+    top: 5,
     zIndex: 1,
   },
-  centeredView: {
+  modalBackground: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 15,
-    backgroundColor: 'rgba(0,0,0,0.5)',
   },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
+  modalContainer: {
     alignItems: 'center',
+    borderRadius: 20,
+    elevation: 5,
+    margin: 20,
+    padding: 20,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -200,44 +211,38 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
-    width: '100%',
   },
-  button: {
-    marginTop: 20,
-    borderRadius: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    elevation: 2,
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    paddingHorizontal: 10,
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  title: {
+  modalTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 15,
     marginBottom: 5,
+    marginTop: 15,
   },
-  text: {
+  modalText: {
     lineHeight: 20,
     textAlign: 'center',
   },
-  linkText: {
+  modalTextName: {
+    fontWeight: 'bold',
+  },
+  modalTextLink: {
     color: '#2196F3',
     textDecorationLine: 'underline',
   },
-  name: {
+  modalButton: {
+    borderRadius: 10,
+    elevation: 2,
+    marginTop: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  modalButtonClose: {
+    backgroundColor: '#2196F3',
+  },
+  modalButtonText: {
+    color: 'white',
     fontWeight: 'bold',
   },
 })
+
+export default Home

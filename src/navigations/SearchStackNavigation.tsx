@@ -1,12 +1,13 @@
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+
 import Search from '../screens/Search'
-import MovieDetail from '../screens/MovieDetail'
 import CategoryResults from '../screens/CategoryResults'
+import MovieDetail from '../screens/MovieDetail'
 
 const Stack = createNativeStackNavigator()
 
-export default function SearchStackNavigation(): JSX.Element {
+const SearchStackNavigation = (): JSX.Element => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -19,3 +20,5 @@ export default function SearchStackNavigation(): JSX.Element {
     </Stack.Navigator>
   )
 }
+
+export default SearchStackNavigation

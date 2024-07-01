@@ -1,21 +1,18 @@
 import React from 'react'
 import {
   ImageBackground,
-  Text,
   StyleSheet,
-  View,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native'
 import { useNavigation, StackActions } from '@react-navigation/native'
 import { FontAwesome } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
+
 import type { MovieItemProps } from '../../types/app'
 
-export default function MovieItem({
-  movie,
-  size,
-  coverType,
-}: MovieItemProps): JSX.Element {
+const MovieItem = ({ movie, size, coverType }: MovieItemProps): JSX.Element => {
   const navigation = useNavigation()
   const pushAction = StackActions.push('MovieDetail', { id: movie.id })
 
@@ -27,8 +24,8 @@ export default function MovieItem({
     >
       <ImageBackground
         resizeMode="cover"
-        style={[size, styles.backgroundImage]}
-        imageStyle={styles.backgroundImageStyle}
+        style={[size, styles.background]}
+        imageStyle={styles.image}
         source={{
           uri: `https://image.tmdb.org/t/p/w500${coverType === 'backdrop' ? movie.backdrop_path : movie.poster_path}`,
         }}
@@ -36,9 +33,9 @@ export default function MovieItem({
         <LinearGradient
           colors={['#00000000', 'rgba(0, 0, 0, 0.7)']}
           locations={[0.6, 0.8]}
-          style={styles.gradientStyle}
+          style={styles.gradient}
         >
-          <Text style={styles.movieTitle}>{movie.title}</Text>
+          <Text style={styles.title}>{movie.title}</Text>
           <View style={styles.ratingContainer}>
             <FontAwesome name="star" size={16} color="yellow" />
             <Text style={styles.rating}>{movie.vote_average.toFixed(1)}</Text>
@@ -50,26 +47,25 @@ export default function MovieItem({
 }
 
 const styles = StyleSheet.create({
-  backgroundImage: {
+  background: {
     marginRight: 4,
   },
-  backgroundImageStyle: {
+  image: {
     borderRadius: 8,
   },
-  movieTitle: {
-    color: 'white',
-  },
-  gradientStyle: {
-    padding: 8,
-    height: '100%',
-    width: '100%',
+  gradient: {
     borderRadius: 8,
     display: 'flex',
+    height: '100%',
     justifyContent: 'flex-end',
+    padding: 8,
+  },
+  title: {
+    color: 'white',
   },
   ratingContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: 2,
   },
   rating: {
@@ -77,3 +73,5 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 })
+
+export default MovieItem

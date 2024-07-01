@@ -1,8 +1,9 @@
 import React from 'react'
 import { Text, StyleSheet, Switch, View } from 'react-native'
+
 import useThemeContext from '../util/useThemeContext'
 
-export default function Settings() {
+const Settings = () => {
   const { colors, isSystemTheme, systemTheme, colorTheme, setColorTheme } =
     useThemeContext()
 
@@ -38,21 +39,21 @@ export default function Settings() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 24,
-    paddingHorizontal: 24,
+    padding: 16,
   },
   heading: {
     borderBottomWidth: 1,
   },
   headingText: {
     fontSize: 21,
-    lineHeight: 28,
     fontWeight: 600,
+    marginBottom: 8,
   },
   row: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%',
   },
 })
+
+export default Settings
