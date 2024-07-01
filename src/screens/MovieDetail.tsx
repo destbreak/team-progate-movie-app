@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
   ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import YoutubePlayer from 'react-native-youtube-iframe'
 import { FontAwesome } from '@expo/vector-icons'
+
+import type { Movie } from '../types/app'
 import MovieList from '../components/movies/MovieList'
 import useThemeContext from '../util/useThemeContext'
-import { Movie } from '../types/app'
 import { API_ACCESS_TOKEN } from '@env'
 
-export default function MovieDetail({ route }: any): JSX.Element {
+const MovieDetail = ({ route }: any): JSX.Element => {
   const { colors } = useThemeContext()
 
   const { id } = route.params
-  const [movie, setMovie] = useState<any | null>(null)
+  const [movie, setMovie] = useState<Movie>()
   const [movieTrailer, setMovieTrailer] = useState()
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
@@ -30,7 +31,7 @@ export default function MovieDetail({ route }: any): JSX.Element {
   }, [])
 
   const getMovieDetails = async (): Promise<void> => {
-    const url = `https://api.themoviedb.org/3/movie/${id}?language=en-US`
+    const url = `https://api.themoviedb.org/3/movie/${id}`
     const options = {
       method: 'GET',
       headers: {
@@ -46,7 +47,7 @@ export default function MovieDetail({ route }: any): JSX.Element {
         setIsLoading(false)
       })
       .catch((errorResponse) => {
-        console.log(errorResponse)
+        console.error(errorResponse)
         setIsLoading(false)
       })
   }
@@ -70,7 +71,7 @@ export default function MovieDetail({ route }: any): JSX.Element {
         setMovieTrailer(trailer?.key)
       })
       .catch((errorResponse) => {
-        console.log(errorResponse)
+        console.error(errorResponse)
       })
   }
 
@@ -78,7 +79,6 @@ export default function MovieDetail({ route }: any): JSX.Element {
     try {
       const initialData: string | null =
         await AsyncStorage.getItem('@FavoriteList')
-      console.log(initialData)
 
       let favMovieList: Movie[] = []
 
@@ -91,7 +91,7 @@ export default function MovieDetail({ route }: any): JSX.Element {
       await AsyncStorage.setItem('@FavoriteList', JSON.stringify(favMovieList))
       setIsFavorite(true)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
@@ -99,7 +99,6 @@ export default function MovieDetail({ route }: any): JSX.Element {
     try {
       const initialData: string | null =
         await AsyncStorage.getItem('@FavoriteList')
-      console.log(initialData)
 
       if (initialData !== null) {
         const favMovieList: Movie[] = JSON.parse(initialData)
@@ -113,7 +112,7 @@ export default function MovieDetail({ route }: any): JSX.Element {
         setIsFavorite(false)
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
@@ -136,16 +135,21 @@ export default function MovieDetail({ route }: any): JSX.Element {
         return false
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       return false
     }
   }
 
   if (isLoading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-        <Text>Loading...</Text>
+      <View
+        style={[
+          styles.loadingContainer,
+          { backgroundColor: colors.backgrounds.default },
+        ]}
+      >
+        <ActivityIndicator size="large" color="#2196F3" />
+        <Text style={{ color: colors.text }}>Loading...</Text>
       </View>
     )
   }
@@ -153,7 +157,7 @@ export default function MovieDetail({ route }: any): JSX.Element {
   return (
     <ScrollView style={{ backgroundColor: colors.backgrounds.default }}>
       <YoutubePlayer height={225} play={false} videoId={movieTrailer} />
-      <View style={styles.titleRatingContainer}>
+      <View style={styles.movieHeader}>
         <View>
           <Text style={[styles.movieTitle, { color: colors.text }]}>
             {movie?.title}
@@ -212,56 +216,47 @@ export default function MovieDetail({ route }: any): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  backgroundImage: {
-    height: 250,
+  loadingContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
   },
-  backgroundImageStyle: {
-    borderRadius: 0,
-  },
-  titleRatingContainer: {
+  movieHeader: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 18,
     paddingVertical: 10,
   },
-  favIcon: {
-    alignSelf: 'center',
-    paddingRight: 10,
-    paddingBottom: 3,
-  },
   movieTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     maxWidth: 300,
   },
-  gradientStyle: {
-    padding: 8,
-    height: '100%',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
   ratingContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     gap: 2,
   },
   rating: {
     color: 'orange',
     fontWeight: '700',
   },
+  favIcon: {
+    alignSelf: 'center',
+    paddingRight: 10,
+  },
   movieDescription: {
+    marginBottom: 20,
     paddingHorizontal: 18,
-    marginBottom: 10,
   },
   movieInfo: {
+    alignItems: 'flex-start',
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    rowGap: 5,
-    alignItems: 'flex-start',
     marginTop: 10,
+    rowGap: 5,
   },
   movieInfoItem: {
     width: '50%',
@@ -269,9 +264,6 @@ const styles = StyleSheet.create({
   movieInfoItemTitle: {
     fontWeight: 'bold',
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 })
+
+export default MovieDetail

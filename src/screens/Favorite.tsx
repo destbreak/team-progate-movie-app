@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
   ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+
+import type { Movie } from '../types/app'
 import MovieItem from '../components/movies/MovieItem'
-import { Movie } from '../types/app'
 import useThemeContext from '../util/useThemeContext'
 
-export default function Favorite(): JSX.Element {
+const Favorite = (): JSX.Element => {
   const { colors } = useThemeContext()
+
   const [favoriteList, setFavoriteList] = useState<Movie[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
@@ -40,9 +42,14 @@ export default function Favorite(): JSX.Element {
 
   if (isLoading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-        <Text>Loading...</Text>
+      <View
+        style={[
+          styles.loadingContainer,
+          { backgroundColor: colors.backgrounds.default },
+        ]}
+      >
+        <ActivityIndicator size="large" color="#2196F3" />
+        <Text style={{ color: colors.text }}>Loading...</Text>
       </View>
     )
   }
@@ -55,13 +62,14 @@ export default function Favorite(): JSX.Element {
       ]}
     >
       {favoriteList.length === 0 ? (
-        <Text style={styles.noFavorite}>No favorite movies yet.</Text>
+        <Text style={[styles.description, { color: colors.text }]}>
+          No favorite movies yet.
+        </Text>
       ) : (
         <FlatList
           data={favoriteList}
-          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.movieItemContainer}>
+            <TouchableOpacity style={styles.list}>
               <MovieItem
                 movie={item}
                 size={{ width: 95, height: 160 }}
@@ -69,7 +77,9 @@ export default function Favorite(): JSX.Element {
               />
             </TouchableOpacity>
           )}
+          keyExtractor={(item) => item.id.toString()}
           numColumns={3}
+          showsVerticalScrollIndicator={false}
         />
       )}
     </View>
@@ -77,27 +87,24 @@ export default function Favorite(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    paddingVertical: 24,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
   loadingContainer: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
+  },
+  container: {
     alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    paddingVertical: 16,
   },
-  movieItemContainer: {
-    margin: 8,
-  },
-  noFavorite: {
+  description: {
     fontSize: 18,
     textAlign: 'center',
-    color: '#fff',
+  },
+  list: {
+    margin: 8,
   },
 })
+
+export default Favorite

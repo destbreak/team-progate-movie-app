@@ -7,15 +7,17 @@ import {
   View,
 } from 'react-native'
 import { Feather } from '@expo/vector-icons'
-import useThemeContext from '../../util/useThemeContext'
+
+import type { Movie } from '../../types/app'
 import MovieItem from '../movies/MovieItem'
+import useThemeContext from '../../util/useThemeContext'
 import { API_ACCESS_TOKEN } from '@env'
 
-export default function KeywordSearch(): JSX.Element {
+const KeywordSearch = (): JSX.Element => {
   const { colors } = useThemeContext()
 
   const [keyword, setKeyword] = useState('')
-  const [results, setResults] = useState([])
+  const [results, setResults] = useState<Movie[]>([])
 
   const getMovieList = (keyword: string) => {
     const url = `https://api.themoviedb.org/3/search/movie?query=${keyword}&page=1`
@@ -44,12 +46,12 @@ export default function KeywordSearch(): JSX.Element {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Masukkan kata kunci"
+          placeholder="Enter the keyword"
           value={keyword}
           onChangeText={setKeyword}
           onSubmitEditing={handleSearch}
         />
-        <Feather name="search" size={28} />
+        <Feather name="search" size={28} onPress={handleSearch} />
       </View>
       <View style={styles.container}>
         <FlatList
@@ -63,7 +65,7 @@ export default function KeywordSearch(): JSX.Element {
               />
             </TouchableOpacity>
           )}
-          keyExtractor={(item) => `${item.id}`}
+          keyExtractor={(item) => item.id.toString()}
           numColumns={3}
           showsVerticalScrollIndicator={false}
         />
@@ -74,13 +76,13 @@ export default function KeywordSearch(): JSX.Element {
 
 const styles = StyleSheet.create({
   inputContainer: {
-    backgroundColor: '#fff',
-    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    backgroundColor: '#fff',
     borderColor: '#ccc',
-    borderWidth: 1,
     borderRadius: 12,
+    borderWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingHorizontal: 12,
   },
   input: {
@@ -88,9 +90,12 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
-    paddingVertical: 24,
+    paddingBottom: 176,
+    paddingTop: 16,
   },
   itemContainer: {
     margin: 8,
   },
 })
+
+export default KeywordSearch

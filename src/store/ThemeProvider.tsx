@@ -18,7 +18,7 @@ export const ThemeContext = React.createContext<ThemeContextState | undefined>(
   undefined,
 )
 
-export default function ThemeProvider({ children }: Props) {
+const ThemeProvider = ({ children }: Props) => {
   const [theme, setTheme] = useState<ColorSchemeName>()
   const [loading, setLoading] = useState(true)
 
@@ -64,3 +64,5 @@ export default function ThemeProvider({ children }: Props) {
     </ThemeContext.Provider>
   )
 }
+
+export default ThemeProvider

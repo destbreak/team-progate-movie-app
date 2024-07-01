@@ -1,9 +1,10 @@
 import { useCallback, useContext, useMemo } from 'react'
 import { ColorSchemeName, useColorScheme } from 'react-native'
+
 import { ThemeContext } from '../store/ThemeProvider'
 import colors from './theme/colors'
 
-export default function useThemeContext() {
+const useThemeContext = () => {
   const context = useContext(ThemeContext)
   const systemColorScheme = useColorScheme()
 
@@ -34,3 +35,5 @@ export default function useThemeContext() {
     ),
   }
 }
+
+export default useThemeContext

@@ -1,15 +1,16 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Feather } from '@expo/vector-icons'
-import useThemeContext from '../util/useThemeContext'
+
 import HomeStackNavigation from './HomeStackNavigation'
 import SearchStackNavigation from './SearchStackNavigation'
 import FavoriteStackNavigation from './FavoriteStackNavigation'
 import Settings from '../screens/Settings'
+import useThemeContext from '../util/useThemeContext'
 
 const Tab = createBottomTabNavigator()
 
-export default function BottomTabNavigator(): JSX.Element {
+const BottomTabNavigator = (): JSX.Element => {
   const { colors } = useThemeContext()
 
   return (
@@ -62,3 +63,5 @@ export default function BottomTabNavigator(): JSX.Element {
     </Tab.Navigator>
   )
 }
+
+export default BottomTabNavigator

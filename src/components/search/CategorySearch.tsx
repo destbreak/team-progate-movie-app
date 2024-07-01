@@ -7,10 +7,11 @@ import {
   View,
 } from 'react-native'
 import { StackActions, useNavigation } from '@react-navigation/native'
+
 import useThemeContext from '../../util/useThemeContext'
 import { API_ACCESS_TOKEN } from '@env'
 
-export default function CategorySearch(): JSX.Element {
+const CategorySearch = (): JSX.Element => {
   const { colors } = useThemeContext()
 
   const [categories, setCategories] = useState([])
@@ -81,33 +82,27 @@ const styles = StyleSheet.create({
     marginVertical: 6,
   },
   button: {
-    width: '48%',
-    paddingVertical: 12,
+    alignItems: 'center',
     backgroundColor: '#fff',
     borderColor: '#ccc',
-    borderWidth: 1,
     borderRadius: 12,
-    alignItems: 'center',
+    borderWidth: 1,
+    paddingVertical: 12,
+    width: '48%',
   },
   buttonSelected: {
-    backgroundColor: '#cce5ff',
-    borderColor: '#0056b3',
+    backgroundColor: '#2196F3',
+    borderColor: '#2196F3',
   },
   searchButton: {
-    width: '100%',
+    alignItems: 'center',
+    backgroundColor: '#2196F3',
+    borderColor: '#2196F3',
+    borderRadius: 12,
+    borderWidth: 1,
     paddingVertical: 12,
     marginVertical: 24,
-    backgroundColor: '#fff',
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  itemContainer: {
-    margin: 8,
-    alignItems: 'center',
-  },
-  list: {
-    paddingBottom: 100,
   },
 })
+
+export default CategorySearch
