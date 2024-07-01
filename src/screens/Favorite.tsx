@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -11,18 +11,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import MovieItem from '../components/movies/MovieItem'
 import { Movie } from '../types/app'
 import useThemeContext from '../util/useThemeContext'
-import { useFocusEffect } from '@react-navigation/native'
 
 export default function Favorite(): JSX.Element {
   const { colors } = useThemeContext()
   const [favoriteList, setFavoriteList] = useState<Movie[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
-  useFocusEffect(
-    useCallback(() => {
-      loadFavorites()
-    }, []),
-  )
+  useEffect(() => {
+    loadFavorites()
+  }, [favoriteList])
 
   const loadFavorites = async (): Promise<void> => {
     try {
